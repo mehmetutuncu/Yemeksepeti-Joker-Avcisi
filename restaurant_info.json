@@ -1,0 +1,30 @@
+{
+  "context": "http://schema.org",
+  "type": "Restaurant",
+  "id": "http://www.yemeksepeti.com/pancakes-academy-waffle-cankaya-fakulteler-mah-ankara",
+  "name": "Pancakes Academy & Waffle",
+  "servesCuisine": [
+    "Tatlı",
+    "Waffle"
+  ],
+  "areaServed": "Ankara",
+  "image": "http://cdn.yemeksepeti.com/CategoryImages/TR_ANKARA/pancakes-academy--waffle-lcv1_big.gif",
+  "openingHours": [
+    "Pazartesi 09:00 - 01:00",
+    "Salı 09:00 - 01:00",
+    "Çarşamba 09:00 - 01:00",
+    "Perşembe 09:00 - 01:00",
+    "Cuma 09:00 - 01:00",
+    "Cumartesi 09:00 - 01:00",
+    "Pazar 09:00 - 01:00"
+  ],
+  "paymentAccepted": [
+    "Online Kredi/Banka Kartı",
+    "Nakit",
+    "Kredi Kartı"
+  ],
+  "address": {
+    "type": "PostalAddress",
+    "addressLocality": "Çankaya (Fakülteler Mah.), Ankara"
+  }
+}
