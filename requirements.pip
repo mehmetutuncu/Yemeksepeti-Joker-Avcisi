@@ -4,3 +4,4 @@ peewee
 bs4
 lxml
 requests
+pyinstaller

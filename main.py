@@ -82,7 +82,6 @@ class JokerAvcisi:
                 _json = None
                 for script in scripts:
                     _json = json.loads(script.string)
-
                     if 'paymentAccepted' in _json:
                         if 'Ticket Restaurant Yemek Kartı' in _json['paymentAccepted']:
                             _json['status'] = True
@@ -120,16 +119,20 @@ class JokerAvcisi:
                                        f"{data['points']}\n"
                             logging.info(text)
                         sleep(2)
-                        status = input("Geçmek istiyor musunuz? e/h: ")
+                        status = input("Geçmek istiyor musunuz? e/h/q: ")
                         if status == 'e':
                             self.browser.find_element_by_id("cboxClose").click()
                             sleep(0.5)
                             continue
+                        elif status == 'q':
+                            self.browser.quit()
+                            break
                         else:
                             logging.info('Jokeri seçebilmeniz için 17 dakika bekleniyor...')
                             sleep(17 * 60)
                 except:
                     logging.error(f"{region.region_name} joker bulunamadı geçiliyor...")
+            exit(0)
         else:
             logging.error("Region tablosunda kayıt mevcut değil!"
                           "Önce yemeksepetinde gezmesini istediğiniz semtleri region tablosuna ekleyiniz.")
