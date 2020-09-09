@@ -76,13 +76,19 @@ class JokerAvcisi:
             response = requests.get(restaurant_url)
             if response.status_code == 200:
                 _soup = BeautifulSoup(response.content, 'lxml')
+                addresss = _soup.select_one('a[href="/ankara/cankaya-g-o-p-100-yil-mah"]')
+                if addresss is None:
+                    addresss = False
+                else:
+                    addresss = True
                 points = _soup.select('span.point')
                 point_text = f"Hız: {points[0].text} / Servis: {points[1].text} / Lezzet: {points[2].text}"
                 scripts = _soup.select('script[type="application/ld+json"]')
-                _json = None
+
                 for script in scripts:
                     _json = json.loads(script.string)
                     if 'paymentAccepted' in _json:
+                        _json['addresss'] = addresss
                         if 'Ticket Restaurant Yemek Kartı' in _json['paymentAccepted']:
                             _json['status'] = True
                         else:
@@ -90,6 +96,19 @@ class JokerAvcisi:
                         _json['points'] = point_text
                         data.append(_json)
         return data
+
+    def joker_control(self):
+        status = input("Geçmek istiyor musunuz? (evet/quit) e/q: ")
+        if status.lower() == 'e':
+            self.browser.find_element_by_id("cboxClose").click()
+            sleep(0.5)
+            return True
+        elif status.lower() == 'q':
+            self.browser.quit()
+            return False
+        else:
+            return self.joker_control()
+
 
     def loop_regions(self):
         regions = Region.select()
@@ -105,31 +124,36 @@ class JokerAvcisi:
                         logging.info(f"{region.region_name} joker bulundu!\n")
                         sleep(0.2)
                         criteria_data = self.check_criteria()
-
+                        addressCounter = 0
+                        paymentCounter = 0
                         for data in criteria_data:
+
                             if data['status'] is True:
                                 text = f"\nRestorant Adı: {data['name']}\n" \
                                        f"Ödeme Şekli: Ticket Restaurant Yemek Kartı geçerlidir.\n" \
                                        f"Adres:{data['address']['addressLocality']}\n" \
                                        f"{data['points']}\n"
+                                paymentCounter += 1
                             else:
                                 text = f"\nRestorant Adı: {data['name']}\n" \
                                        f"Ödeme Şekli: Ticket Restaurant Yemek Kartı geçerli değildir.\n" \
                                        f"Adres:{data['address']['addressLocality']}\n" \
                                        f"{data['points']}\n"
+                            if data['addresss'] is True:
+                                addressCounter += 1
+                                text += "G.O.P 100. Yıl Mah. gönderim yapılmakta. \n"
+                            else:
+                                text += "G.O.P 100. Yıl Mah. gönderim yapılmamakta. \n"
                             logging.info(text)
                         sleep(2)
-                        status = input("Geçmek istiyor musunuz? e/h/q: ")
-                        if status == 'e':
+                        if addressCounter > 0 and paymentCounter > 0:
+                            status = self.joker_control()
+                            if not status:
+                                break
+                        else:
+                            logging.error("Belirlenen adrese gönderim yapılmamakta.")
                             self.browser.find_element_by_id("cboxClose").click()
                             sleep(0.5)
-                            continue
-                        elif status == 'q':
-                            self.browser.quit()
-                            break
-                        else:
-                            logging.info('Jokeri seçebilmeniz için 17 dakika bekleniyor...')
-                            sleep(17 * 60)
                 except:
                     logging.error(f"{region.region_name} joker bulunamadı geçiliyor...")
             exit(0)

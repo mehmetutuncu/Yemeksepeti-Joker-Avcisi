@@ -13,7 +13,7 @@ Programın joker bulması durumunda konsol üzerinde yönergeler geliyor.<br>
 restaurant_info.json dosyasının içerisinde paymentAccepted anahtarında ödeme seçenekleri gelmekte. 
 İsteğinize göre kod içerisinden revize edebilirsiniz.
 
-### 4- Output
+### 4- Çıktı
 ````commandline
 INFO:root:Yıldız Hilal Mah. joker aranıyor...
 INFO:root:Yıldız Hilal Mah. joker bulundu!
@@ -44,3 +44,11 @@ Hız: 9,2 / Servis: 9,3 / Lezzet: 9,2
 
 Geçmek istiyor musunuz? e/h: 
 ````
+
+### 5- Exe Oluşturmak
+
+`````commandline
+pip install -r requirements.pip
+pyinstaller main.py --onefile --console --icon=icon/icon.ico --name=YemeksepetiJokerAvcisi
+`````
+Dist klasörünün içinde exe dosyasını bulabilirsiniz.
