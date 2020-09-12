@@ -51,4 +51,5 @@ Geçmek istiyor musunuz? e/h:
 pip install -r requirements.pip
 pyinstaller main.py --onefile --console --icon=icon/icon.ico --name=YemeksepetiJokerAvcisi
 `````
+**exe_creator.bat** dosyasını çalıştırarakta exe üretebilirsiniz. <br>
 Dist klasörünün içinde exe dosyasını bulabilirsiniz.
